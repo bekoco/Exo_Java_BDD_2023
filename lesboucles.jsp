@@ -67,6 +67,17 @@
 
 
 
+<!-- Exercice 1 : Le carré d'étoiles -->
+            <h2>Exercice 1 : Le carré d'étoiles</h2>
+            <%
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        out.print("*");
+                    }
+                    out.println("<br>");
+                }
+            %>
+
 
 <% } %>
 <p><a href="index.html">Retour au sommaire</a></p>
