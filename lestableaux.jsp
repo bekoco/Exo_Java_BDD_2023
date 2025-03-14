@@ -33,13 +33,12 @@
 
 <h2>Exercice 2 : La somme des 2 premières valeurs</h2>
 <% 
+    int sommePremiersChiffres = 0;
     if (tableauDeChiffres.length > 1) {
-        int sommePremiersChiffres = Integer.parseInt(tableauDeChiffres[0]) + Integer.parseInt(tableauDeChiffres[1]);
-    %>
-    <p>La somme des deux premières valeurs est : <%= sommePremiersChiffres %></p>
-    <% 
+        sommePremiersChiffres = Integer.parseInt(tableauDeChiffres[0]) + Integer.parseInt(tableauDeChiffres[1]);
     }
 %>
+<p>La somme des deux premières valeurs est : <%= sommePremiersChiffres %></p>
 
 <h2>Exercice 3 : La somme de toutes les valeurs</h2>
 <% 
