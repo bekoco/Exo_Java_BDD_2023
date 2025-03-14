@@ -49,7 +49,7 @@
     <% } %>
 </p>
 
-<h2>Exercice 4 : Triangle rectangle 2</h2>
+<h2>Exercice 4 : Triangle rectangle</h2>
 <p>Ecrire le code afin de produire un triangle rectangle aligné sur la droite</p>
 <p>Exemple si l'utilisateur saisie la valeur 5</p>
 <p>
