@@ -29,13 +29,13 @@
 <p>Ecrire le code afin de produire un carré d'étoile</p>
 <p>Exemple si l'utilisateur saisie le valeur 5</p>
  // Exercice 1 : Le carré d'étoiles
-        System.out.println("\nExercice 1 : Le carré d'étoiles");
-        for (int i = 0; i < n; i++) {
+        <%System.out.println("\nExercice 1 : Le carré d'étoiles");%>
+        <%for (int i = 0; i < n; i++) %>{
             // Pour chaque ligne, on affiche n étoiles
-            for (int j = 0; j < n; j++) {
-                System.out.print("*");
+            <%for (int j = 0; j < n; j++)%> {
+                <%System.out.print("*");%>
             }
-            System.out.println(); // passage à la ligne
+            <%System.out.println(); // passage à la ligne
         }
 
 <h2>Exercice 2 : Triangle rectangle gauche</h2>
