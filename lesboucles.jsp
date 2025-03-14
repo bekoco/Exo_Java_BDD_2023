@@ -66,21 +66,7 @@
 <p>5 x 5 = 25</p>
 
 
-# Exercice 1 : Le carré d'étoiles
-n = int(input("Saisir le nombre d'étoiles : "))
-for i in range(n):
-    print('*' * n)
 
-# Exercice 2 : Triangle rectangle gauche
-n = int(input("Saisir le nombre d'étoiles : "))
-for i in range(1, n + 1):
-    print('*' * i)
-
-
-# Exercice 3 : Triangle rectangle inversé
-n = int(input("Saisir le nombre d'étoiles : "))
-for i in range(n, 0, -1):
-    print('*' * i)
 
 <% } %>
 <p><a href="index.html">Retour au sommaire</a></p>
