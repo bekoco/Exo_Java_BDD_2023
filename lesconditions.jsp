@@ -10,6 +10,7 @@
     <p>Saisir la valeur 2 : <input type="text" id="inputValeur" name="valeur2">
     <p><input type="submit" value="Afficher">
 </form>
+
 <%-- Récupération des valeurs --%>
     <% String valeur1 = request.getParameter("valeur1"); %>
     <% String valeur2 = request.getParameter("valeur2"); %>
@@ -28,21 +29,66 @@
         <% } else { %>
             <p>Valeur 1 est égale à Valeur 2.</p>
         <% } %>
-   
-    
+    <% } %>
+
 <h2>Exercice 1 : Comparaison 1</h2>
-<p>Ecrire un programme qui demande à l'utilisateur de saisir 3 valeurs (des chiffres),</br>
-A, B et C et dites nous si la valeur de C est comprise entre A et B.</br>
-Exemple :</br>
-A = 10</br>
-B = 20</br>
-C = 15</br>
-Oui C est compris entre A et B</p>
+<p>Ecrire un programme qui demande à l'utilisateur de saisir 3 valeurs (A, B et C) et dites nous si la valeur de C est comprise entre A et B.</p>
+<p>Exemple :</p>
+<p>A = 10</p>
+<p>B = 20</p>
+<p>C = 15</p>
+<p>Vérification : Est-ce que C est compris entre A et B ?</p>
+
+<% 
+    String valeurA = request.getParameter("valeurA");
+    String valeurB = request.getParameter("valeurB");
+    String valeurC = request.getParameter("valeurC");
+
+    if (valeurA != null && valeurB != null && valeurC != null) {
+        int A = Integer.parseInt(valeurA);
+        int B = Integer.parseInt(valeurB);
+        int C = Integer.parseInt(valeurC);
+
+        if (C > A && C < B) {
+%>
+            <p>Oui, C est compris entre A et B.</p>
+<% 
+        } else {
+%>
+            <p>Non, C n'est pas compris entre A et B.</p>
+<% 
+        }
+    }
+%>
 
 <h2>Exercice 2 : Pair ou Impair ?</h2>
-<p>Écrivez un programme pour vérifier si un nombre est pair ou impair en utilisant une structure if</p>
+<p>Ecrivez un programme pour vérifier si un nombre est pair ou impair en utilisant une structure if.</p>
+<p>Exemple : Si l'utilisateur saisie la valeur 5, le programme doit afficher "Impair".</p>
+
+<% 
+    String valeurTest = request.getParameter("valeurTest");
+    if (valeurTest != null) {
+        int valeur = Integer.parseInt(valeurTest);
+
+        if (valeur % 2 == 0) {
+%>
+            <p>Le nombre <%= valeur %> est pair.</p>
+<% 
+        } else {
+%>
+            <p>Le nombre <%= valeur %> est impair.</p>
+<% 
+        }
+    }
+%>
+
+<form action="#" method="post">
+    <p>Saisir une valeur pour tester pair ou impair : <input type="text" name="valeurTest"></p>
+    <p><input type="submit" value="Vérifier"></p>
+</form>
 
 <% } %>
+
 <p><a href="index.html">Retour au sommaire</a></p>
 </body>
 </html>
