@@ -7,15 +7,16 @@
         private String description;
         private boolean terminee;
 
-        public MyTask(String titre, String description, boolean terminee) {
+        public MyTask(String titre, String description) {
             this.titre = titre;
             this.description = description;
-            this.terminee = terminee;
+            this.terminee = false;
         }
 
         public String getTitre() { return titre; }
         public String getDescription() { return description; }
         public boolean isTerminee() { return terminee; }
+        public void setTerminee(boolean terminee) { this.terminee = terminee; }
     }
 %>
 
@@ -33,10 +34,6 @@
         <label for="description">Description :</label><br>
         <textarea id="description" name="description" rows="4" cols="40" required></textarea><br><br>
 
-        <label>
-            <input type="checkbox" name="terminee"> Terminée ?
-        </label><br><br>
-
         <input type="submit" value="Ajouter la tâche">
     </form>
 
@@ -52,14 +49,22 @@
 
     String titre = request.getParameter("titre");
     String description = request.getParameter("description");
-    String termineeStr = request.getParameter("terminee");
-    boolean terminee = termineeStr != null;
 
     if (titre != null && description != null && !titre.isEmpty() && !description.isEmpty()) {
-        MyTask nouvelleTache = new MyTask(titre, description, terminee);
+        MyTask nouvelleTache = new MyTask(titre, description);
         listeTaches.add(nouvelleTache);
     }
 
+    // Marquer une tâche comme terminée
+    String terminerIndexStr = request.getParameter("terminerIndex");
+    if (terminerIndexStr != null) {
+        int index = Integer.parseInt(terminerIndexStr);
+        if (index >= 0 && index < listeTaches.size()) {
+            listeTaches.get(index).setTerminee(true);
+        }
+    }
+
+    // Suppression
     String deleteIndexStr = request.getParameter("deleteIndex");
     if (deleteIndexStr != null) {
         int index = Integer.parseInt(deleteIndexStr);
@@ -81,7 +86,14 @@
             <em><%= t.getDescription() %></em><br>
             <span>Terminée : <%= t.isTerminee() ? "✅ Oui" : "❌ Non" %></span><br><br>
 
-            <form method="post" action="taches.jsp">
+            <% if (!t.isTerminee()) { %>
+            <form method="post" action="taches.jsp" style="display:inline;">
+                <input type="hidden" name="terminerIndex" value="<%= i %>">
+                <input type="submit" value="Marquer comme terminée">
+            </form>
+            <% } %>
+
+            <form method="post" action="taches.jsp" style="display:inline;">
                 <input type="hidden" name="deleteIndex" value="<%= i %>">
                 <input type="submit" value="Supprimer">
             </form>
