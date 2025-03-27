@@ -47,6 +47,7 @@
         session.setAttribute("listeTaches", listeTaches);
     }
 
+    // Création d'une nouvelle tâche
     String titre = request.getParameter("titre");
     String description = request.getParameter("description");
 
@@ -55,16 +56,7 @@
         listeTaches.add(nouvelleTache);
     }
 
-    // Marquer une tâche comme terminée
-    String terminerIndexStr = request.getParameter("terminerIndex");
-    if (terminerIndexStr != null) {
-        int index = Integer.parseInt(terminerIndexStr);
-        if (index >= 0 && index < listeTaches.size()) {
-            listeTaches.get(index).setTerminee(true);
-        }
-    }
-
-    // Suppression
+    // Suppression d'une tâche
     String deleteIndexStr = request.getParameter("deleteIndex");
     if (deleteIndexStr != null) {
         int index = Integer.parseInt(deleteIndexStr);
@@ -73,25 +65,35 @@
         }
     }
 
+    // Mise à jour de l'état "Terminée"
+    String updateIndexStr = request.getParameter("updateIndex");
+    String checkboxValue = request.getParameter("terminee");
+    if (updateIndexStr != null) {
+        int index = Integer.parseInt(updateIndexStr);
+        if (index >= 0 && index < listeTaches.size()) {
+            listeTaches.get(index).setTerminee(checkboxValue != null);
+        }
+    }
+
     if (!listeTaches.isEmpty()) {
 %>
     <h2>Liste des tâches :</h2>
     <ul>
-    <%
+<%
         for (int i = 0; i < listeTaches.size(); i++) {
             MyTask t = listeTaches.get(i);
-    %>
+%>
         <li>
             <strong><%= t.getTitre() %></strong><br>
             <em><%= t.getDescription() %></em><br>
-            <span>Terminée : <%= t.isTerminee() ? "✅ Oui" : "❌ Non" %></span><br><br>
 
-            <% if (!t.isTerminee()) { %>
             <form method="post" action="taches.jsp" style="display:inline;">
-                <input type="hidden" name="terminerIndex" value="<%= i %>">
-                <input type="submit" value="Marquer comme terminée">
+                <input type="hidden" name="updateIndex" value="<%= i %>">
+                <label>
+                    <input type="checkbox" name="terminee" <%= t.isTerminee() ? "checked" : "" %> onchange="this.form.submit()"> 
+                    Tâche terminée ?
+                </label>
             </form>
-            <% } %>
 
             <form method="post" action="taches.jsp" style="display:inline;">
                 <input type="hidden" name="deleteIndex" value="<%= i %>">
@@ -99,9 +101,9 @@
             </form>
         </li>
         <br>
-    <%
+<%
         }
-    %>
+%>
     </ul>
 <%
     } else {
