@@ -2,7 +2,6 @@
 <%@ page import="java.util.ArrayList" %>
 
 <%!
-    // Classe représentant une tâche
     public class MyTask {
         private String titre;
         private String description;
@@ -44,7 +43,6 @@
     <hr>
 
 <%
-    // Récupération ou création de la liste des tâches
     ArrayList<MyTask> listeTaches = (ArrayList<MyTask>) session.getAttribute("listeTaches");
 
     if (listeTaches == null) {
@@ -52,7 +50,6 @@
         session.setAttribute("listeTaches", listeTaches);
     }
 
-    // Récupération des paramètres du formulaire
     String titre = request.getParameter("titre");
     String description = request.getParameter("description");
     String termineeStr = request.getParameter("terminee");
@@ -63,7 +60,14 @@
         listeTaches.add(nouvelleTache);
     }
 
-    // Affichage de la liste des tâches
+    String deleteIndexStr = request.getParameter("deleteIndex");
+    if (deleteIndexStr != null) {
+        int index = Integer.parseInt(deleteIndexStr);
+        if (index >= 0 && index < listeTaches.size()) {
+            listeTaches.remove(index);
+        }
+    }
+
     if (!listeTaches.isEmpty()) {
 %>
     <h2>Liste des tâches :</h2>
@@ -77,7 +81,6 @@
             <em><%= t.getDescription() %></em><br>
             <span>Terminée : <%= t.isTerminee() ? "✅ Oui" : "❌ Non" %></span><br><br>
 
-            <!-- Formulaire pour supprimer une tâche -->
             <form method="post" action="taches.jsp">
                 <input type="hidden" name="deleteIndex" value="<%= i %>">
                 <input type="submit" value="Supprimer">
@@ -93,15 +96,6 @@
 %>
     <p>Aucune tâche enregistrée.</p>
 <%
-    }
-
-    // Suppression d'une tâche si demandé
-    String deleteIndexStr = request.getParameter("deleteIndex");
-    if (deleteIndexStr != null) {
-        int index = Integer.parseInt(deleteIndexStr);
-        if (index >= 0 && index < listeTaches.size()) {
-            listeTaches.remove(index);
-        }
     }
 %>
 
