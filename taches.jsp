@@ -5,16 +5,19 @@
     public class MyTask {
         private String titre;
         private String description;
+        private String echeance;
         private boolean terminee;
 
-        public MyTask(String titre, String description) {
+        public MyTask(String titre, String description, String echeance) {
             this.titre = titre;
             this.description = description;
+            this.echeance = echeance;
             this.terminee = false;
         }
 
         public String getTitre() { return titre; }
         public String getDescription() { return description; }
+        public String getEcheance() { return echeance; }
         public boolean isTerminee() { return terminee; }
         public void setTerminee(boolean terminee) { this.terminee = terminee; }
     }
@@ -23,6 +26,19 @@
 <html>
 <head>
     <title>Gestionnaire de Tâches</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        form {
+            display: inline;
+        }
+    </style>
 </head>
 <body bgcolor="white">
     <h1>Ajouter une tâche</h1>
@@ -32,9 +48,12 @@
         <input type="text" id="titre" name="titre" required><br><br>
 
         <label for="description">Description :</label><br>
-        <textarea id="description" name="description" rows="4" cols="40" required></textarea><br><br>
+        <textarea id="description" name="description" rows="3" cols="40" required></textarea><br><br>
 
-        <input type="submit" value="Ajouter la tâche">
+        <label for="echeance">Date d'échéance :</label><br>
+        <input type="date" id="echeance" name="echeance" required><br><br>
+
+        <input type="submit" value="Ajouter">
     </form>
 
     <hr>
@@ -47,16 +66,17 @@
         session.setAttribute("listeTaches", listeTaches);
     }
 
-    // Création d'une nouvelle tâche
+    // Création d'une tâche
     String titre = request.getParameter("titre");
     String description = request.getParameter("description");
+    String echeance = request.getParameter("echeance");
 
-    if (titre != null && description != null && !titre.isEmpty() && !description.isEmpty()) {
-        MyTask nouvelleTache = new MyTask(titre, description);
-        listeTaches.add(nouvelleTache);
+    if (titre != null && description != null && echeance != null &&
+        !titre.isEmpty() && !description.isEmpty() && !echeance.isEmpty()) {
+        listeTaches.add(new MyTask(titre, description, echeance));
     }
 
-    // Suppression d'une tâche
+    // Suppression
     String deleteIndexStr = request.getParameter("deleteIndex");
     if (deleteIndexStr != null) {
         int index = Integer.parseInt(deleteIndexStr);
@@ -65,46 +85,55 @@
         }
     }
 
-    // Mise à jour de l'état "Terminée"
-    String updateIndexStr = request.getParameter("updateIndex");
-    String checkboxValue = request.getParameter("terminee");
-    if (updateIndexStr != null) {
-        int index = Integer.parseInt(updateIndexStr);
+    // Marquer comme terminée
+    String terminerIndexStr = request.getParameter("terminerIndex");
+    if (terminerIndexStr != null) {
+        int index = Integer.parseInt(terminerIndexStr);
         if (index >= 0 && index < listeTaches.size()) {
-            listeTaches.get(index).setTerminee(checkboxValue != null);
+            listeTaches.get(index).setTerminee(true);
         }
     }
 
     if (!listeTaches.isEmpty()) {
 %>
-    <h2>Liste des tâches :</h2>
-    <ul>
+    <h2>Liste des tâches</h2>
+    <table>
+        <tr>
+            <th>#</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date d'échéance</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
 <%
         for (int i = 0; i < listeTaches.size(); i++) {
             MyTask t = listeTaches.get(i);
 %>
-        <li>
-            <strong><%= t.getTitre() %></strong><br>
-            <em><%= t.getDescription() %></em><br>
+        <tr>
+            <td><%= i + 1 %></td>
+            <td><%= t.getTitre() %></td>
+            <td><%= t.getDescription() %></td>
+            <td><%= t.getEcheance() %></td>
+            <td><%= t.isTerminee() ? "Terminée" : "En cours" %></td>
+            <td>
+                <form method="post" action="taches.jsp">
+                    <input type="hidden" name="deleteIndex" value="<%= i %>">
+                    <input type="submit" value="Supprimer">
+                </form>
 
-            <form method="post" action="taches.jsp" style="display:inline;">
-                <input type="hidden" name="updateIndex" value="<%= i %>">
-                <label>
-                    <input type="checkbox" name="terminee" <%= t.isTerminee() ? "checked" : "" %> onchange="this.form.submit()"> 
-                    Tâche terminée ?
-                </label>
-            </form>
-
-            <form method="post" action="taches.jsp" style="display:inline;">
-                <input type="hidden" name="deleteIndex" value="<%= i %>">
-                <input type="submit" value="Supprimer">
-            </form>
-        </li>
-        <br>
+                <% if (!t.isTerminee()) { %>
+                <form method="post" action="taches.jsp">
+                    <input type="hidden" name="terminerIndex" value="<%= i %>">
+                    <input type="submit" value="Terminer">
+                </form>
+                <% } %>
+            </td>
+        </tr>
 <%
         }
 %>
-    </ul>
+    </table>
 <%
     } else {
 %>
