@@ -1,17 +1,25 @@
-<%@ page import="java.io.*" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Chaîne JSP</title>
-</head>
-<body>
+<%@ page contentType="text/plain; charset=UTF-8" %>
 <%
+    // Déclaration de la chaîne
     String bonjour = "salut la compagnie";
-    String majuscules = bonjour.toUpperCase();
 
-   
+    // Mise en majuscules
+    String bonjourMajuscule = bonjour.toUpperCase();
+
+    // Méthode pour mettre uniquement la première lettre en majuscule
+    String capitalizeFirstLetter(String texte) {
+        if (texte == null || texte.isEmpty()) return texte;
+        return texte.substring(0, 1).toUpperCase() + texte.substring(1);
+    }
+
+    String bonjourCapitalize = capitalizeFirstLetter(bonjour);
 %>
 
+Message original :
+<%= bonjour %>
 
-</body>
-</html>
+Message en majuscule :
+<%= bonjourMajuscule %>
+
+Message avec la première lettre en majuscule :
+<%= bonjourCapitalize %>
